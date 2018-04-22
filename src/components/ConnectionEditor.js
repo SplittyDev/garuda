@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
+import MysqlConnector from './../connectors/MysqlConnector'
 
 import Button from './Button'
 import Row from './Row'
@@ -51,15 +52,46 @@ class ConnectionEditor extends Component {
         this.state = {
             id: uuidv4(),
             name: `${sample(connectionPrefixes)} Connection`,
+            test: null,
             ...(props.connection || {})
         }
+        this.testBannerTimeout = null;
     }
 
     testConnection = () => {
+        let ci = this.buildConnectionInfo()
+        const db = new MysqlConnector(ci)
+        db.connect()
+            .then(() => {
+                this.setState({
+                    ...this.state,
+                    test: true,
+                })
+                if (this.testBannerTimeout) {
+                    clearTimeout(this.testBannerTimeout)
+                }
+                this.testBannerTimeout = setTimeout(() => {
+                    this.testBannerTimeout = null
+                    this.setState({...this.state, test: null})
+                }, 5000)
+            })
+            .catch(err => {
+                this.setState({
+                    ...this.state,
+                    test: false,
+                })
+                if (this.testBannerTimeout) {
+                    clearTimeout(this.testBannerTimeout)
+                }
+                this.testBannerTimeout = setTimeout(() => {
+                    this.testBannerTimeout = null
+                    this.setState({...this.state, test: null})
+                }, 5000)
+            })
     }
 
-    saveConnection = () => {
-        let connection = {
+    buildConnectionInfo = () => {
+        return {
             id: this.state.id,
             name: this.state.name,
             host: this.state.host || 'localhost',
@@ -67,13 +99,17 @@ class ConnectionEditor extends Component {
             user: this.state.user || 'root',
             pass: this.state.pass || null,
         }
-        this.props.store.addOrUpdateConnection(connection);
-        this.props.store.goWelcome();
+    }
+
+    saveConnection = () => {
+        let connection = this.buildConnectionInfo()
+        this.props.store.addOrUpdateConnection(connection)
+        this.props.store.goWelcome()
     }
 
     removeConnection = () => {
-        this.props.store.removeConnection(this.props.connection);
-        this.props.store.goWelcome();
+        this.props.store.removeConnection(this.props.connection)
+        this.props.store.goWelcome()
     }
 
     render() {
@@ -84,6 +120,14 @@ class ConnectionEditor extends Component {
                     html={this.state.name}
                     id="connection-name"
                 />
+                {
+                    this.state.test !== null ? (
+                        <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
+                            <div id="time">{new Date().toLocaleTimeString()}</div>
+                            <div id="text">{this.state.test ? 'Connection successful.' : 'Unable to connect.'}</div>
+                        </div>
+                    ) : null
+                }
                 <Grid gap="1rem" cols={2} collapse="500px">
                     <Column>
                         <label for="host">Host</label>
@@ -172,6 +216,39 @@ export default styled(ConnectionEditor)`
     #connection-name:focus, #connection-name:hover {
         border-left: 3px solid hsl(198,50%,60%);
         color: hsl(0,0%,20%);
+    }
+
+    #test-result {
+        display: flex;
+        flex-flow: row;
+        font-size: 1rem;
+        color: white;
+    }
+
+    #test-result>* {
+        padding: .75rem .75rem;
+    }
+
+    #test-result>#time {
+        display: inline-block;
+        color: hsl(0,0%,90%);
+        height: 100%;
+        border-radius: .25rem 0 0 .25rem;
+        background-color: hsl(0,0%,20%);
+    }
+
+    #test-result>#text {
+        flex-grow: 1;
+        display: inline-block;
+        border-radius: 0 .25rem .25rem 0;
+    }
+
+    #test-result[data-result-type=positive]>#text {
+        background-color: hsl(120,50%,60%);
+    }
+
+    #test-result[data-result-type=negative]>#text {
+        background-color: hsl(0,50%,60%);
     }
 
     label {
