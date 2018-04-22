@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
 import Store from './store'
-import Workspace from './components/Workspace';
+import Workspace from './components/Workspace'
 
 class App extends Component {
   constructor(props) {

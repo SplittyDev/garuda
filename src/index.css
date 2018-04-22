@@ -1,7 +1,19 @@
+@font-face {
+  font-family: Lato;
+  font-weight: 400;
+  src: url(./fonts/Lato-Regular.ttf) format(truetype);
+}
+
+@font-face {
+  font-family: Lato;
+  font-weight: 700;
+  src: url(./fonts/Lato-Bold.ttf) format(truetype);
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
 * {

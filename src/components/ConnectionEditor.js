@@ -181,10 +181,10 @@ export default styled(ConnectionEditor)`
 
     input {
         font-size: 1rem;
-        padding: .5rem .5rem;    
+        padding: .75rem .75rem;    
         border: none;
         box-shadow: 0 0 2px 0 hsl(0,0%,0%), 0 0 0 1px hsl(0,0%,95%);
-        border-radius: .25rem .25rem;
+        border-radius: .15rem .15rem;
         outline: none;
         transition: 250ms ease-in-out;
     }
