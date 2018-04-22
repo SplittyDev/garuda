@@ -24,6 +24,6 @@ export default class MysqlConnector {
     }
 
     disconnect() {
-        this.connection.end();
+        this.connection.end()
     }
 }

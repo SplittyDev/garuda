@@ -1,12 +1,12 @@
 import React from 'react'
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react'
 
 import View from './View'
 import Connections from './Connections'
 import ConnectionEditor from './ConnectionEditor'
 
 const Workspace = ({store, workspace}) => {
-    let workspaceContent = null;
+    let workspaceContent = null
     switch (workspace.id) {
         case 'welcome': {
             workspaceContent = (

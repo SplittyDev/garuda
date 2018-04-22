@@ -55,7 +55,7 @@ class ConnectionEditor extends Component {
             test: null,
             ...(props.connection || {})
         }
-        this.testBannerTimeout = null;
+        this.testBannerTimeout = null
     }
 
     testConnection = () => {

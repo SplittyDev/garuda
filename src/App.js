@@ -7,7 +7,7 @@ import Workspace from './components/Workspace'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.store = new Store();
+    this.store = new Store()
   }
   render() {
     return (
@@ -16,7 +16,7 @@ class App extends Component {
           <Workspace store={this.store} workspace={this.store.workspace} />
         </div>
       </div>
-    );
+    )
   }
 }
 

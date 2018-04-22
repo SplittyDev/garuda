@@ -18,7 +18,7 @@ class Store {
     }
 
     goNewConnection() {
-        delete this.editingConnection;
+        delete this.editingConnection
         this.workspace = {
             id: 'edit-connection',
             title: 'New Connection',
@@ -26,7 +26,7 @@ class Store {
     }
 
     goEditConnection(connection) {
-        this.editingConnection = connection;
+        this.editingConnection = connection
         this.workspace = {
             id: 'edit-connection',
             title: 'Edit Connection',

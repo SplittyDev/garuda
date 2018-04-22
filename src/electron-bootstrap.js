@@ -4,7 +4,7 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const { default: installExtension, REACT_DEVELOPER_TOOLS, MOBX_DEVTOOLS } = require('electron-devtools-installer');
+const { default: installExtension, REACT_DEVELOPER_TOOLS, MOBX_DEVTOOLS } = require('electron-devtools-installer')
 
 const path = require('path')
 const url = require('url')
@@ -43,11 +43,11 @@ function createWindow () {
 app.on('ready', () => {
   installExtension(REACT_DEVELOPER_TOOLS)
     .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
+    .catch((err) => console.log('An error occurred: ', err))
   installExtension(MOBX_DEVTOOLS)
     .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
-  createWindow();
+    .catch((err) => console.log('An error occurred: ', err))
+  createWindow()
 })
 
 // Quit when all windows are closed.
