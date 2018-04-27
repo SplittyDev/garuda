@@ -4,8 +4,14 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
+// IPC bindings
+const MysqlConnector = require('./native/MysqlConnector')
+const mysqlConnector = new MysqlConnector()
+
+// Developer tools
 const { default: installExtension, REACT_DEVELOPER_TOOLS, MOBX_DEVTOOLS } = require('electron-devtools-installer')
 
+// Other stuff
 const path = require('path')
 const url = require('url')
 

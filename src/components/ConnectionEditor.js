@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import MysqlConnector from './../connectors/MysqlConnector'
+import {mysqlTestConnection} from './../connectors/MysqlConnector'
 
 import {Row, Column, Grid} from './UI/Layout'
 import {ContentEditable, Button} from './UI/Controls'
@@ -57,34 +57,36 @@ class ConnectionEditor extends Component {
 
     testConnection = () => {
         let ci = this.buildConnectionInfo()
-        const db = new MysqlConnector(ci)
-        db.connect()
-            .then(() => {
+        mysqlTestConnection(ci).then(({success, err}) => {
+            if (success) {
                 this.setState({
                     ...this.state,
                     test: true,
+                    testerr: null,
                 })
                 if (this.testBannerTimeout) {
                     clearTimeout(this.testBannerTimeout)
                 }
                 this.testBannerTimeout = setTimeout(() => {
                     this.testBannerTimeout = null
-                    this.setState({...this.state, test: null})
+                    this.setState({...this.state, test: null, testerr: null})
                 }, 5000)
-            })
-            .catch(err => {
+            } else {
+                console.log(err.code)
                 this.setState({
                     ...this.state,
                     test: false,
+                    testerr: err.code,
                 })
                 if (this.testBannerTimeout) {
                     clearTimeout(this.testBannerTimeout)
                 }
                 this.testBannerTimeout = setTimeout(() => {
                     this.testBannerTimeout = null
-                    this.setState({...this.state, test: null})
+                    this.setState({...this.state, test: null, testerr: null})
                 }, 5000)
-            })
+            }
+        })
     }
 
     buildConnectionInfo = () => {
@@ -121,7 +123,7 @@ class ConnectionEditor extends Component {
                     this.state.test !== null && (
                         <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
                             <div id="time">{new Date().toLocaleTimeString()}</div>
-                            <div id="text">{this.state.test ? 'Connection successful.' : 'Unable to connect.'}</div>
+                            <div id="text">{this.state.test ? 'Connection successful.' : this.state.testerr}</div>
                         </div>
                     )
                 }
