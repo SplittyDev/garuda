@@ -2,11 +2,8 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import MysqlConnector from './../connectors/MysqlConnector'
 
-import Button from './Button'
-import Row from './Row'
-import Column from './Column'
-import Grid from './Grid'
-import ContentEditable from './ContentEditable'
+import {Row, Column, Grid} from './UI/Layout'
+import {ContentEditable, Button} from './UI/Controls'
 
 import {sample} from 'lodash'
 
@@ -95,7 +92,7 @@ class ConnectionEditor extends Component {
             id: this.state.id,
             name: this.state.name,
             host: this.state.host || 'localhost',
-            port: this.state.port !== undefined ?this.state.port : 3306,
+            port: this.state.port !== undefined ? this.state.port : 3306,
             user: this.state.user || 'root',
             pass: this.state.pass || null,
         }
@@ -121,12 +118,12 @@ class ConnectionEditor extends Component {
                     id="connection-name"
                 />
                 {
-                    this.state.test !== null ? (
+                    this.state.test !== null && (
                         <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
                             <div id="time">{new Date().toLocaleTimeString()}</div>
                             <div id="text">{this.state.test ? 'Connection successful.' : 'Unable to connect.'}</div>
                         </div>
-                    ) : null
+                    )
                 }
                 <Grid gap="1rem" cols={2} collapse="500px">
                     <Column>
@@ -190,9 +187,9 @@ class ConnectionEditor extends Component {
                         <Button onClick={this.testConnection} type="neutral">Test Connection</Button>
                         <Button onClick={this.saveConnection} type="positive" grow={true}>Save</Button>
                         {
-                            this.props.store.editingConnection ? (
+                            this.props.store.editingConnection && (
                                 <Button onClick={this.removeConnection} type="negative">Delete&nbsp;<i className="fas fa-trash"/></Button>
-                            ) : null
+                            )
                         }
                     </Row>
                 </div>

@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import {observer} from 'mobx-react'
 
-import Button from './Button'
-import Row from './Row'
+import {Button} from './UI/Controls'
+import {Row} from './UI/Layout'
 
 const Header = observer(({className, store, title}) => (
     <header className={className}>
