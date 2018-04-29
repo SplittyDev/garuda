@@ -35,9 +35,11 @@ const ConnectionBoxRaw = ({className, store, connection}) => (
                     <div>
                         {
                             Object.keys(connection).map(key => {
-                                const blacklist=['id', 'name'];
-                                const val = connection[key]
-                                return !blacklist.includes(key) && val ? <InfoPair name={key} value={val}/> : null
+                                const blacklist='id|name|pass'.split('|')
+                                const transforms={}
+                                const transFunc = transforms[key] || (() => null)
+                                const val = transFunc(connection[key]) || connection[key]
+                                return !blacklist.includes(key) && val && <InfoPair name={key} value={val}/>
                             })
                         }
                     </div>

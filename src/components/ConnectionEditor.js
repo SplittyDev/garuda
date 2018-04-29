@@ -114,22 +114,24 @@ class ConnectionEditor extends Component {
     render() {
         return (
             <form className={this.props.className}>
-                <ContentEditable
-                    onChange={e => this.setState({...this.state, name: e.target.value})}
-                    html={this.state.name}
-                    id="connection-name"
-                />
-                {
-                    this.state.test !== null && (
-                        <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
-                            <div id="time">{new Date().toLocaleTimeString()}</div>
-                            <div id="text">{this.state.test ? 'Connection successful.' : this.state.testerr}</div>
-                        </div>
-                    )
-                }
+                <Row>
+                    <ContentEditable
+                        onChange={e => this.setState({...this.state, name: e.target.value})}
+                        html={this.state.name}
+                        id="connection-name"
+                    />
+                    {
+                        this.state.test !== null && (
+                            <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
+                                <div id="time">{new Date().toLocaleTimeString()}</div>
+                                <div id="text">{this.state.test ? 'Connection successful.' : this.state.testerr}</div>
+                            </div>
+                        )
+                    }
+                </Row>
                 <Grid gap="1rem" cols={2} collapse="500px">
                     <Column>
-                        <label for="host">Host</label>
+                        <label htmlFor="host">Host</label>
                         <input
                             onChange={e => this.setState({...this.state, host: e.target.value})}
                             value={this.state.host}
@@ -140,7 +142,7 @@ class ConnectionEditor extends Component {
                         />
                     </Column>
                     <Column>
-                        <label for="port">Port</label>
+                        <label htmlFor="port">Port</label>
                         <input
                             onChange={e => this.setState({...this.state, port: e.target.value})}
                             value={this.state.port}
@@ -154,7 +156,7 @@ class ConnectionEditor extends Component {
                 </Grid>
                 <Grid gap="1rem" cols={3} collapse="750px">
                     <Column>
-                        <label for="user">Username</label>
+                        <label htmlFor="user">Username</label>
                         <input
                             onChange={e => this.setState({...this.state, user: e.target.value})}
                             value={this.state.user}
@@ -164,7 +166,7 @@ class ConnectionEditor extends Component {
                         />
                     </Column>
                     <Column>
-                        <label for="pass">Password</label>
+                        <label htmlFor="pass">Password</label>
                         <input
                             onChange={e => this.setState({...this.state, pass: e.target.value})}
                             value={this.state.pass}
@@ -174,7 +176,7 @@ class ConnectionEditor extends Component {
                         />
                     </Column>
                     <Column>
-                        <label for="db">Database/Schema</label>
+                        <label htmlFor="db">Database/Schema</label>
                         <input
                             onChange={e => this.setState({...this.state, db: e.target.value})}
                             value={this.state.db}
@@ -210,6 +212,8 @@ export default styled(ConnectionEditor)`
         border-left: 3px solid hsl(0,0%,60%);
         color: hsl(0,0%,70%);
         transition: 250ms ease-in-out;
+        flex-grow: 1;
+        line-height: 2rem;
     }
 
     #connection-name:focus, #connection-name:hover {
@@ -222,10 +226,13 @@ export default styled(ConnectionEditor)`
         flex-flow: row;
         font-size: 1rem;
         color: white;
+        line-height: 2rem;
+        min-width: calc(50% - 0.5rem);
+        max-width: 100%;
     }
 
     #test-result>* {
-        padding: .75rem .75rem;
+        padding: 0 .75rem;
     }
 
     #test-result>#time {

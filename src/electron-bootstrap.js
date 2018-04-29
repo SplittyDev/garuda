@@ -5,8 +5,7 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
 // IPC bindings
-const MysqlConnector = require('./native/MysqlConnector')
-const mysqlConnector = new MysqlConnector()
+require('./native/MysqlProvider')
 
 // Developer tools
 const { default: installExtension, REACT_DEVELOPER_TOOLS, MOBX_DEVTOOLS } = require('electron-devtools-installer')
