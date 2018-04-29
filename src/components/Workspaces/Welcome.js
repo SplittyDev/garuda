@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import {Button} from './UI/Controls'
+import {Button} from '../UI/Controls'
 
 const InfoPairRaw = ({className, name, value}) => (
     <div className={className}>

@@ -2,21 +2,20 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import View from './View'
-import Connections from './Connections'
-import ConnectionEditor from './ConnectionEditor'
+import {WsWelcome, WsEditConnection} from './Workspaces'
 
 const Workspace = ({store, workspace}) => {
     let workspaceContent = null
     switch (workspace.id) {
         case 'welcome': {
             workspaceContent = (
-                <Connections store={store} dataSource={store.connections}/>
+                <WsWelcome store={store} dataSource={store.connections}/>
             )
             break
         }
         case 'edit-connection': {
             workspaceContent = (
-                <ConnectionEditor store={store} connection={store.editingConnection}/>
+                <WsEditConnection store={store} connection={store.editingConnection}/>
             )
             break
         }

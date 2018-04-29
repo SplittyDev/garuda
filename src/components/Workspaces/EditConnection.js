@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import {mysqlTestConnection} from './../connectors/MysqlConnector'
+import {mysqlTestConnection} from '../../connectors/MysqlConnector'
 
-import {Row, Column, Grid} from './UI/Layout'
-import {ContentEditable, Button} from './UI/Controls'
+import {Row, Column, Grid} from '../UI/Layout'
+import {ContentEditable, Button} from '../UI/Controls'
 
 import {sample} from 'lodash'
 
