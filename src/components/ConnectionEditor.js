@@ -50,6 +50,7 @@ class ConnectionEditor extends Component {
             id: uuidv4(),
             name: `${sample(connectionPrefixes)} Connection`,
             test: null,
+            testinit: false,
             ...(props.connection || {})
         }
         this.testBannerTimeout = null
@@ -57,12 +58,17 @@ class ConnectionEditor extends Component {
 
     testConnection = () => {
         let ci = this.buildConnectionInfo()
+        this.setState({
+            ...this.state,
+            testinit: true,
+        })
         mysqlTestConnection(ci).then(({success, err}) => {
             if (success) {
                 this.setState({
                     ...this.state,
                     test: true,
                     testerr: null,
+                    testinit: false,
                 })
                 if (this.testBannerTimeout) {
                     clearTimeout(this.testBannerTimeout)
@@ -77,6 +83,7 @@ class ConnectionEditor extends Component {
                     ...this.state,
                     test: false,
                     testerr: err.code,
+                    testinit: false,
                 })
                 if (this.testBannerTimeout) {
                     clearTimeout(this.testBannerTimeout)
@@ -121,10 +128,10 @@ class ConnectionEditor extends Component {
                         id="connection-name"
                     />
                     {
-                        this.state.test !== null && (
-                            <div id='test-result' data-result-type={this.state.test ? 'positive' : 'negative'}>
+                        (this.state.test !== null || this.state.testinit) && (
+                            <div id='test-result' data-result-type={this.state.testinit ? 'neutral' : this.state.test ? 'positive' : 'negative'}>
                                 <div id="time">{new Date().toLocaleTimeString()}</div>
-                                <div id="text">{this.state.test ? 'Connection successful.' : this.state.testerr}</div>
+                                <div id="text">{this.state.testinit ? 'Connecting...' : this.state.test ? 'Connection successful.' : this.state.testerr}</div>
                             </div>
                         )
                     }
@@ -251,6 +258,10 @@ export default styled(ConnectionEditor)`
 
     #test-result[data-result-type=positive]>#text {
         background-color: hsl(120,50%,60%);
+    }
+
+    #test-result[data-result-type=neutral]>#text {
+        background-color: hsl(0,0%,35%);
     }
 
     #test-result[data-result-type=negative]>#text {
