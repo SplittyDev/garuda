@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Column = ({className, children}) => (
-    <div className={className}>
+const Column = ({className, id, onClick, children}) => (
+    <div id={id} className={className} onClick={onClick}>
         {children}
     </div>
 )

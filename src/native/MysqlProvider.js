@@ -1,7 +1,22 @@
 const {ipcMain} = require('electron')
+const fs = require('fs')
 const mysql = require('mysql2')
 
-const providers = []
+let providers = []
+
+function log(str) {
+    if (process.env.DEBUG) {
+        fs.appendFileSync('electron.log', `${str}\n`)
+    }
+}
+
+ipcMain.on('mysql::disconnectAll', () => {
+    providers.forEach(provider => {
+        provider.disconnect()
+        provider.__dispose()
+    })
+    providers = []
+})
 
 ipcMain.on('mysql::getProvider', (e, {id}) => {
     const provider = new MysqlProvider(id)
@@ -23,6 +38,9 @@ class MysqlProvider {
         this.handle('mysql->connect', (e, args) => {
             $this.connect(e, args)
         })
+        this.handle('mysql->query', (e, args) => {
+            $this.query(e, args)
+        })
         this.handle('mysql->disconnect', (e, args) => {
             $this.disconnect(e, args)
             removeProvider($this)
@@ -33,17 +51,23 @@ class MysqlProvider {
         const delim = ['->', '<-'].filter(x => name.includes(x))[0]
         const head = name.split(delim)[0]
         const tail = name.substring(name.indexOf(delim))
-        return `${head}(${this.id})${tail}`
+        const ep = `${head}(${this.id})${tail}`
+        return ep
     }
 
     handle(name, handler) {
         const ep = this.getep(name)
         this.handlers.push([ep, handler])
-        ipcMain.on(this.getep(name), handler)
+        ipcMain.on(ep, (e, args) => {
+            log(`[Main <- Renderer /${ep}]`)
+            handler(e, args)
+        })
     }
 
     reply(name, e, data) {
-        e.sender.send(this.getep(name), data)
+        const ep = this.getep(name)
+        log(`[Main -> Renderer /${ep}]`)
+        e.sender.send(ep, data)
     }
 
     connect(e, {connectionInfo}) {
@@ -54,9 +78,22 @@ class MysqlProvider {
             user: connectionInfo.user,
             password: connectionInfo.pass,
             database: connectionInfo.db,
+            multipleStatements: true,
         })
         this.connection.connect(err => {
             this.reply(`mysql<-connect`, e, {err: err})
+        })
+    }
+
+    query(e, {queryId, query, values}) {
+        log(`[MySQL::Query] ${query}`)
+        this.connection.query(query, values, (err, results, fields) => {
+            this.reply(`mysql<-query(${queryId})`, e, {
+                success: !err,
+                err: err,
+                results: results,
+                fields: fields,
+            })
         })
     }
 

@@ -39,7 +39,7 @@ const ConnectionBoxRaw = ({className, store, connection}) => (
                                 const transforms={}
                                 const transFunc = transforms[key] || (() => null)
                                 const val = transFunc(connection[key]) || connection[key]
-                                return !blacklist.includes(key) && val && <InfoPair name={key} value={val}/>
+                                return !blacklist.includes(key) && val && <InfoPair key={key} name={key} value={val}/>
                             })
                         }
                     </div>
@@ -56,16 +56,16 @@ const ConnectionBoxRaw = ({className, store, connection}) => (
             )
         }
         {
-            connection ? (
+            connection && (
                 <div className="buttons">
-                    <Button type="positive" onClick={() => store.go404()} grow={true}>
+                    <Button type="positive" onClick={() => store.goWorkbench(connection)} grow={true}>
                         Connect
                     </Button>
                     <Button type="edit" onClick={() => store.goEditConnection(connection)} fontSize=".8rem">
                         <i className="fas fa-cog"/>
                     </Button>
                 </div>
-            ) : (null)
+            )
         }
     </div>
 )
@@ -109,7 +109,7 @@ const Connections = ({className, store, dataSource}) => (
     <div className={className}>
         {
             store.connections.map(con => (
-                <ConnectionBox store={store} connection={con}/>
+                <ConnectionBox key={con.name} store={store} connection={con}/>
             ))
         }
         <ConnectionBox store={store} connection={null}/> 

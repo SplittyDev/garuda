@@ -2,7 +2,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 
 import View from './View'
-import {WsWelcome, WsEditConnection} from './Workspaces'
+import {WsWelcome, WsEditConnection, WsWorkbench} from './Workspaces'
 
 const Workspace = ({store, workspace}) => {
     let workspaceContent = null
@@ -16,6 +16,12 @@ const Workspace = ({store, workspace}) => {
         case 'edit-connection': {
             workspaceContent = (
                 <WsEditConnection store={store} connection={store.editingConnection}/>
+            )
+            break
+        }
+        case 'workbench': {
+            workspaceContent = (
+                <WsWorkbench store={store} connection={store.activeConnection}/>
             )
             break
         }

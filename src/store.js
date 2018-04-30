@@ -33,6 +33,14 @@ class Store {
         }
     }
 
+    goWorkbench(connection) {
+        this.activeConnection = connection
+        this.workspace = {
+            id: 'workbench',
+            title: `Workbench: ${connection.name}`,
+        }
+    }
+
     go404() {
         this.workspace = {
             id: null,
