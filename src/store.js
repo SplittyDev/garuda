@@ -1,4 +1,5 @@
 import {observable, decorate} from 'mobx'
+import * as MysqlConnector from './connectors/MysqlConnector'
 
 class Store {
     workspace = {
@@ -11,6 +12,7 @@ class Store {
     }
 
     goWelcome() {
+        MysqlConnector.disconnectAll()
         this.workspace = {
             id: 'welcome',
             title: 'Welcome',

@@ -44,14 +44,20 @@ class DatabaseEntry extends Component {
 
 export default styled(DatabaseEntry)`
     font-size: .9rem;
-    flex-grow: 1;
+    display: flex;
 
     &:hover {
         cursor: pointer;
     }
 
     #header {
-        padding: .5rem 0;
+        padding: .25rem 0;
+        color: hsl(0, 0%, 20%);
+        transition: all 150ms ease-in-out;
+    }
+
+    #header:hover {
+        color: hsl(0, 0%, 0%);
     }
 
     #rowDbName {
@@ -71,5 +77,7 @@ export default styled(DatabaseEntry)`
 
     #tables {
         margin-top: .25rem;
+        max-width: 250px;
+        overflow-x: auto;
     }
 `

@@ -97,7 +97,7 @@ class MysqlProvider {
         })
     }
 
-    disconnect(e, {connectionInfo}) {
+    disconnect(e) {
         this.connection.close()
     }
 

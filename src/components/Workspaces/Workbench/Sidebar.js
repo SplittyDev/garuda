@@ -46,6 +46,8 @@ class Sidebar extends Component {
 }
 
 export default styled(Sidebar)`
+    padding-right: 2rem;
+
     & * {
         user-select: none;
     }

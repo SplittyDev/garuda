@@ -18,7 +18,7 @@ class TableEntry extends Component {
                     <Row id="header" justifyContent="space-between">
                         <div id="rowTableName">
                             <i id="tableSymbol" className="fas fa-table"/>
-                            <span id="dbName">{this.props.tableName}</span>
+                            <span id="tableName">{this.props.tableName}</span>
                         </div>
                     </Row>
                 </Column>
@@ -38,10 +38,21 @@ export default styled(TableEntry)`
 
     #rowTableName {
         flex-grow: 1;
+        overflow: hidden;
+        display: flex;
+        flex-flow: row nowrap;
     }
 
     #tableSymbol {
         margin-right: .5rem;
         color: hsl(0, 0%, 50%);
+    }
+
+    #tableName {
+        flex-basis: auto;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 `

@@ -3,8 +3,9 @@ import styled from 'styled-components'
 
 import MysqlConnector from '../../../connectors/MysqlConnector'
 
-import {Row} from '../../UI/Layout'
+import {Column, Row} from '../../UI/Layout'
 import Sidebar from './Sidebar'
+import QueryEditor from './QueryEditor'
 
 class Workbench extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class Workbench extends Component {
             <div className={this.props.className}>
                 <Row>
                     <Sidebar mysql={this.state.mysql}/>
+                    <QueryEditor mysql={this.state.mysql}/>
                 </Row>
             </div>
         )
